@@ -1,4 +1,4 @@
-# Django ignores
 *.sqlite3
 *.sqlite3-journal
 *.pyc
+*.DS_Store
