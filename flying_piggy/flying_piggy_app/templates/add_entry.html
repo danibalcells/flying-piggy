@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Add New Savings Entry</h2>
+  <h3>Shortcuts</h3>
+  <button type="button" onclick="fillForm('Coffee', 5)">Coffee</button>
+  <button type="button" onclick="fillForm('Lunch', 10)">Lunch</button>
+  <button type="button" onclick="fillForm('Dinner', 20)">Dinner</button>
+
+  <script>
+    function fillForm(description, amount) {
+      document.querySelector('input[name="description"]').value = description;
+      document.querySelector('input[name="amount"]').value = amount;
+    }
+  </script>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Entry</button>
+  </form>
+  <a href="{% url 'home' %}">Back to Home</a>
+
+
+  <style>
+    input[name="description"] {
+      width: 300px;  /* or any desired width */
+    }
+  </style>
+{% endblock %}
