@@ -11,21 +11,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <a href="{% url 'progress' %}">
-            <img src="{% static 'flying_piggy_app/header.png' %}" alt="Flying Piggy Header Image">
-        </a>
-        <nav>
-            <a href="{% url 'progress' %}" class="{% if request.path == '/' %}active{% endif %}">PRGRSS</a> |
-            <a href="{% url 'add_entry' %}" class="{% if request.path == '/add_entry/' %}active{% endif %}">$AVE</a> 
-        </nav>
-    </header>
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-    <footer>
-        <p>&copy; 2024 Baobao & Maomao</p>
-    </footer>
+    <div class="container">
+        <header>
+            <img src="{% static 'flying_piggy_app/header.png' %}" alt="Flying Piggy Header Image" class="logo">
+            <nav>
+                <a href="{% url 'progress' %}" class="{% if request.path == '/' %}active{% endif %}">PRGRSS</a>
+                <a href="{% url 'add_entry' %}" class="{% if request.path == '/add_entry/' %}active{% endif %}">$AVE</a> 
+            </nav>
+        </header>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+        <footer>
+            <p>&copy; 2024 Baobao & Maomao</p>
+        </footer>
+    </div>
 </body>
 </html>

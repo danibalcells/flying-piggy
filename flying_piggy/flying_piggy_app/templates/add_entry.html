@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
+<div class="save-form-container">
   <div class="shortcuts">
     {% for shortcut in shortcuts %}
-      <button type="button" onclick="fillForm('{{ shortcut.description }}', {{ shortcut.amount }})">{{ shortcut.emoji }} {{ shortcut.name }}</button>
+      <button type="button" class="shortcut-button" onclick="fillForm('{{ shortcut.description }}', {{ shortcut.amount }})">
+        <span class="emoji">{{ shortcut.emoji }}</span>
+        <span class="name">{{ shortcut.name }}</span>
+      </button>
     {% endfor %}
   </div>
-  <form method="post">
+  <form method="post" class="save-form">
     {% csrf_token %}
     <div class="form-group">
       <label for="{{ form.amount.id_for_label }}">AMOUNT</label>
@@ -16,16 +21,13 @@
       <label for="{{ form.description.id_for_label }}">DESCRIPTION</label>
       {{ form.description }}
     </div>
-    <div class="form-group">
-      <label for="{{ form.goal.id_for_label }}">GOAL</label>
-      {{ form.goal }}
-    </div>
     <button type="submit" class="save-button">SAVE AWAY!</button>
   </form>
-  <script>
-    function fillForm(description, amount) {
-      document.querySelector('input[name="description"]').value = description;
-      document.querySelector('input[name="amount"]').value = amount;
-    }
-  </script>
+</div>
+<script>
+  function fillForm(description, amount) {
+    document.querySelector('input[name="description"]').value = description;
+    document.querySelector('input[name="amount"]').value = amount;
+  }
+</script>
 {% endblock %}

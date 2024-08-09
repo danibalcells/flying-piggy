@@ -9,12 +9,12 @@ class SavingsEntryForm(forms.ModelForm):
 
     class Meta:
         model = SavingsEntry
-        fields = ['amount', 'description', 'goal']
+        fields = ['amount', 'description']
 
 class SavingsGoalForm(forms.ModelForm):
     class Meta:
         model = SavingsGoal
-        fields = ['name', 'target_amount']
+        fields = ['name', 'target_amount', 'date', 'image']
 
 class ShortcutForm(forms.ModelForm):
     class Meta:

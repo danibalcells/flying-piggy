@@ -1,19 +1,48 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 
 {% block content %}
-  <h2>Your Savings Goals</h2>
-  <ul>
-    {% for item in goal_progress %}
-      <li>
-        <strong>{{ item.goal.name }}</strong> - Target: ${{ item.goal.target_amount }}<br>
-        Saved: ${{ item.total_saved }} ({{ item.progress_percentage|floatformat:2 }}%)
-      </li>
-    {% endfor %}
-  </ul>
-  <h2>Latest Entries</h2>
-  <ul>
-    {% for entry in latest_entries %}
-      <li>{{entry.user.username}} - {{ entry.date }} - ${{ entry.amount }} - {{ entry.description }} (for {{entry.goal.name}})</li>
-    {% endfor %}
-  </ul>
+<div class="container">
+    <div class="progress-container">
+        <div class="progress-scroll" id="progressScroll">
+            {% for progress in goal_progress %}
+                <div class="progress-card {% if forloop.counter0 == current_goal_index %}current-goal{% endif %}" data-index="{{ forloop.counter0 }}">
+                    <img src="{{ progress.goal.image.url }}" alt="{{ progress.goal.name }}" class="goal-image">
+                    <div class="progress-info">
+                        <h1>{{ progress.progress_percentage|floatformat:0 }}%</h1>
+                        <h2>{{ progress.goal.name|upper }}</h2>
+                        <p>{{ progress.goal.date|date:"M d, Y" }} - {{ progress.days_left }} days left</p>
+                        <p>${{ progress.goal.target_amount }} / ${{ progress.total_saved }}</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {{ progress.progress_percentage }}%;"></div>
+                        </div>
+                        <div class="user-contributions">
+                            {% for username, contribution in progress.user_contributions.items %}
+                                {% if contribution.amount > 0 %}
+                                    <div class="user-contribution">
+                                        <img src="{{ contribution.image.url }}" alt="{{ username }}" class="user-image">
+                                        <span>{{ username|upper }}</span>
+                                        <span>${{ contribution.amount }}</span>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const scrollContainer = document.querySelector('.progress-scroll');
+      const currentGoal = document.querySelector('.current-goal');
+      if (currentGoal) {
+          scrollContainer.scrollLeft = currentGoal.offsetLeft - (scrollContainer.clientWidth / 2) + (currentGoal.clientWidth / 2);
+      }
+  });
+</script>
 {% endblock %}

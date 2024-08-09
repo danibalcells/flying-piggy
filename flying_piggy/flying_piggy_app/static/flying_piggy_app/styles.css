@@ -1,121 +1,206 @@
 body {
-    background-color: #FFC107; /* Yellow background */
+    background-color: #FFC107;
     font-family: "Rubik Mono One", monospace;
-    text-align: center;
-    color: #000;
-}
-
-h1 {
-    font-size: 2.5em;
-    margin-top: 20px;
-}
-
-form {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
 }
 
-.form-group {
-    margin-bottom: 15px;
-    text-align: left;
-    width: 80%;
-    max-width: 300px;
-}
-
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-input, select, button {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 2px solid #000;
-    border-radius: 5px;
-    font-size: 1.2em;
-}
-
-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-color: #FFF;
-    color: #000;
-    width: 100%; /* Ensure the select element has the same width */
-}
-
-button {
-    font-family: "Rubik Mono One", monospace;
-    background-color: #000;
-    color: #FFF;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #333;
-}
-
-.save-button {
-    font-weight: bold;
-    font-size: 1.5em;
-    padding: 15px 30px;
-    max-width: 300px; /* Set a maximum width for the button */
-    width: 100%; /* Ensure the button takes the full width up to the max-width */
-}
-
-header img {
-    max-width: 100%;
-    max-height: 200px;
-    height: auto;
-}
-
-.shortcuts {
-    margin-top: 20px;
+.container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.shortcuts button {
-    background-color: #FFF;
-    color: #000;
-    border: 2px solid #000;
-    margin: 5px;
-    max-width: 150px; /* Set a maximum width for the buttons */
-    flex: 1 1 auto; /* Allow buttons to grow and shrink */
-    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
 }
 
-.shortcuts button:hover {
-    background-color: #000;
-    color: #FFF;
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.logo {
+    max-width: 200px;
+    margin-bottom: 20px;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
 nav a {
-    margin: 0 10px;
     text-decoration: none;
     color: #000;
-    font-size: 1.2em;
-    position: relative;
+    font-size: 24px;
 }
 
-nav a.active::after {
-    content: '';
-    display: block;
+nav a.active {
+    border-bottom: 2px solid #000;
+}
+
+.progress-container {
     width: 100%;
-    height: 2px;
-    background-color: #000;
-    position: absolute;
-    bottom: -5px;
-    left: 0;
+    overflow: hidden;
 }
 
-nav a:hover {
-    text-decoration: none; /* Remove underline on hover */
+.progress-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px 0;
+}
+
+.progress-card {
+    flex: 0 0 auto;
+    width: 80%;
+    max-width: 400px;
+    margin: 0 10px;
+    background-color: #FFF8DC;
+    border-radius: 10px;
+    overflow: hidden;
+    scroll-snap-align: center;
+}
+
+.goal-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.progress-info {
+    padding: 20px;
+}
+
+.progress-bar {
+    height: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #4CAF50;
+}
+
+.user-contributions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.user-contribution {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+}
+
+.user-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+footer {
+    margin-top: auto;
+    text-align: center;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.progress-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.progress-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.save-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.shortcuts {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.shortcut-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #FFF8DC;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  font-family: "Rubik Mono One", monospace;
+}
+
+.shortcut-button .emoji {
+  font-size: 24px;
+}
+
+.shortcut-button .name {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.save-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: "Rubik Mono One", monospace;
+}
+
+.save-button {
+  background-color: #FFF8DC;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  align-self: center;
+  font-family: "Rubik Mono One", monospace;
+  width: 100%;
 }

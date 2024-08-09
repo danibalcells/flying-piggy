@@ -130,3 +130,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Add these lines at the end of the file
 LOGIN_REDIRECT_URL = '/'  # Redirect to home page after login
 LOGIN_URL = '/accounts/login/'  # URL to redirect to for login
+
+# Add these lines at the end of the file
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
