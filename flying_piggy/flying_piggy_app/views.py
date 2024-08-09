@@ -1,8 +1,8 @@
 from django.db.models import Sum
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import SavingsEntry, SavingsGoal
-from .forms import SavingsEntryForm, SavingsGoalForm
+from .models import SavingsEntry, SavingsGoal, Shortcut
+from .forms import SavingsEntryForm, SavingsGoalForm, ShortcutForm
 
 @login_required
 def add_entry(request):
@@ -12,10 +12,11 @@ def add_entry(request):
             entry = form.save(commit=False)
             entry.user = request.user
             entry.save()
-            return redirect('home')
+            return redirect('progress')
     else:
         form = SavingsEntryForm()
-    return render(request, 'add_entry.html', {'form': form})
+    shortcuts = Shortcut.objects.all()
+    return render(request, 'add_entry.html', {'form': form, 'shortcuts': shortcuts})
 
 @login_required
 def add_goal(request):
@@ -24,13 +25,13 @@ def add_goal(request):
         if form.is_valid():
             goal = form.save()
             goal.users.add(request.user)
-            return redirect('home')
+            return redirect('progress')
     else:
         form = SavingsGoalForm()
     return render(request, 'add_goal.html', {'form': form})
 
 @login_required
-def home(request):
+def progress(request):
     goals = SavingsGoal.objects.filter(users=request.user)
     goal_progress = []
 
@@ -45,4 +46,15 @@ def home(request):
 
     latest_entries = SavingsEntry.objects.filter(user=request.user).order_by('-date')[:5]
 
-    return render(request, 'home.html', {'goal_progress': goal_progress, 'latest_entries': latest_entries})
+    return render(request, 'progress.html', {'goal_progress': goal_progress, 'latest_entries': latest_entries})
+
+@login_required
+def add_shortcut(request):
+    if request.method == 'POST':
+        form = ShortcutForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('progress')
+    else:
+        form = ShortcutForm()
+    return render(request, 'add_shortcut.html', {'form': form})

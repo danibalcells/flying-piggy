@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Flying Piggy</h1>
   <h2>Your Savings Goals</h2>
   <ul>
     {% for item in goal_progress %}
@@ -17,6 +16,4 @@
       <li>{{entry.user.username}} - {{ entry.date }} - ${{ entry.amount }} - {{ entry.description }} (for {{entry.goal.name}})</li>
     {% endfor %}
   </ul>
-  <a href="{% url 'add_entry' %}">Add New Entry</a>
-  <a href="{% url 'add_goal' %}">Add New Goal</a>
 {% endblock %}

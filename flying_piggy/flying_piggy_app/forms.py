@@ -1,5 +1,5 @@
 from django import forms
-from .models import SavingsEntry, SavingsGoal
+from .models import SavingsEntry, SavingsGoal, Shortcut
 
 class SavingsEntryForm(forms.ModelForm):
     description = forms.CharField(
@@ -15,3 +15,8 @@ class SavingsGoalForm(forms.ModelForm):
     class Meta:
         model = SavingsGoal
         fields = ['name', 'target_amount']
+
+class ShortcutForm(forms.ModelForm):
+    class Meta:
+        model = Shortcut
+        fields = ['name', 'amount', 'description', 'emoji']
