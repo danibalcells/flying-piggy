@@ -37,6 +37,14 @@ class GoalProgress:
         self.user_contributions[entry.user.username].amount += amount_to_add
         return amount_to_add
 
+    @property
+    def sorted_user_contributions(self):
+        return sorted(
+            [(username, contrib) for username, contrib in self.user_contributions.items() if contrib.amount > 0],
+            key=lambda x: x[1].amount,
+            reverse=True
+        )
+
 def calculate_progress():
     goals = SavingsGoal.objects.all().order_by('date')
     entries = SavingsEntry.objects.all().order_by('date')

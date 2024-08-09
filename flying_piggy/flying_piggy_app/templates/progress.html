@@ -2,35 +2,44 @@
 {% load custom_filters %}
 
 {% block content %}
-<div class="container">
-    <div class="progress-container">
-        <div class="progress-scroll" id="progressScroll">
-            {% for progress in goal_progress %}
-                <div class="progress-card {% if forloop.counter0 == current_goal_index %}current-goal{% endif %}" data-index="{{ forloop.counter0 }}">
-                    <img src="{{ progress.goal.image.url }}" alt="{{ progress.goal.name }}" class="goal-image">
-                    <div class="progress-info">
-                        <h1>{{ progress.progress_percentage|floatformat:0 }}%</h1>
-                        <h2>{{ progress.goal.name|upper }}</h2>
-                        <p>{{ progress.goal.date|date:"M d, Y" }} - {{ progress.days_left }} days left</p>
-                        <p>${{ progress.goal.target_amount }} / ${{ progress.total_saved }}</p>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: {{ progress.progress_percentage }}%;"></div>
-                        </div>
-                        <div class="user-contributions">
-                            {% for username, contribution in progress.user_contributions.items %}
-                                {% if contribution.amount > 0 %}
-                                    <div class="user-contribution">
-                                        <img src="{{ contribution.image.url }}" alt="{{ username }}" class="user-image">
-                                        <span>{{ username|upper }}</span>
-                                        <span>${{ contribution.amount }}</span>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
+<div class="progress-container">
+    <div class="progress-scroll" id="progressScroll">
+        {% for progress in goal_progress %}
+            <div class="progress-card {% if forloop.counter0 == current_goal_index %}current-goal{% endif %}" data-index="{{ forloop.counter0 }}">
+                <img src="{{ progress.goal.image.url }}" alt="{{ progress.goal.name }}" class="goal-image">
+                <div class="progress-info">
+                    <h1>{{ progress.progress_percentage|floatformat:0 }}%</h1>
+                    <h2>{{ progress.goal.name|upper }}</h2>
+                    <p class="date">{{ progress.goal.date|date:"M d, Y" }}</p>
+                    <p class="days-counter">
+                    {% if progress.days_left < 0 %}
+                        {{ progress.days_left|abs_value }} days ago
+                    {% else %}
+                        {{ progress.days_left }} days left
+                    {% endif %}
+                    </p>
+                    <p class="amount-info">
+                        <span class="saved-amount">${{ progress.total_saved|floatformat:0 }}</span>
+                        <span class="separator">/</span>
+                        <span class="target-amount">${{ progress.goal.target_amount|floatformat:0 }}</span>
+                    </p>
+                    <div class="progress-bar">
+                        {% for username, contribution in progress.sorted_user_contributions %}
+                            <div class="progress-segment" style="width: {{ contribution.amount|percentage:progress.goal.target_amount }}%; background-color: {{ contribution.color }};"></div>
+                        {% endfor %}
+                    </div>
+                    <div class="user-contributions">
+                        {% for username, contribution in progress.sorted_user_contributions %}
+                            <div class="user-contribution">
+                                <img src="{{ contribution.image.url }}" alt="{{ username }}" class="user-image" style="border-color: {{ contribution.color }};">
+                                <span class="username">{{ username|upper }}</span>
+                                <span class="amount">${{ contribution.amount|floatformat:0 }}</span>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
@@ -38,11 +47,44 @@
 {% block extra_js %}
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-      const scrollContainer = document.querySelector('.progress-scroll');
-      const currentGoal = document.querySelector('.current-goal');
-      if (currentGoal) {
-          scrollContainer.scrollLeft = currentGoal.offsetLeft - (scrollContainer.clientWidth / 2) + (currentGoal.clientWidth / 2);
-      }
-  });
+    const scrollContainer = document.querySelector('.progress-scroll');
+    const currentGoal = document.querySelector('.current-goal');
+
+    if (currentGoal) {
+        console.log('Current Goal:', currentGoal);
+        const scrollPosition = currentGoal.offsetLeft - scrollContainer.offsetLeft - (scrollContainer.clientWidth / 2) + (currentGoal.offsetWidth / 2);
+        console.log('Scroll Position:', scrollPosition);
+        scrollContainer.scrollTo({
+            left: scrollPosition,
+        });
+    }
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    scrollContainer.addEventListener('mousedown', (e) => {
+        isDown = true;
+        startX = e.pageX - scrollContainer.offsetLeft;
+        scrollLeft = scrollContainer.scrollLeft;
+    });
+
+    scrollContainer.addEventListener('mouseleave', () => {
+        isDown = false;
+    });
+
+    scrollContainer.addEventListener('mouseup', () => {
+        isDown = false;
+    });
+
+    scrollContainer.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - scrollContainer.offsetLeft;
+        const walk = (x - startX) * 2;
+        scrollContainer.scrollLeft = scrollLeft - walk;
+    });
+});
+
 </script>
 {% endblock %}

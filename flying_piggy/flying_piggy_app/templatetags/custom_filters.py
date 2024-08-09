@@ -23,3 +23,7 @@ def percentage(value, arg):
         return (Decimal(value) / Decimal(arg)) * 100
     except (ValueError, ZeroDivisionError):
         return 0
+
+@register.filter
+def abs_value(value):
+    return abs(value)
